@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Rock-Paper-Scissor </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+
+</head>
+
+<body class="bg-light">
+    <div class="container mx-auto">
+        <div class="header">
+            <div class="mx-auto mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <img class="mx-auto" style="max-width: 30%;" src="https://assets.ytv.com/wp-content/uploads/2024/02/01194152/rocklogo.png">
+                <div class="button_start flex flex-col items-center">
+                    <button id="button_start_game" class="mx-auto mt-4 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="start()">
+                        Play Game
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden grid grid-cols-3 gap-3" id="gameplay">
+            <div id="player_choice_card" class="player-choices mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <h3 class="text-center text-white">Player</h3>
+                <p class="text-white text-center">Choose rock, paper, or scissors!</p>
+                <br>
+                <div style="text-align: center;">
+                    <button id="btn-choose" class="p-3 m-3 rounded-md  text-center cursor-pointer bg-fuchsia-300 " onclick="choose(0)" p-8>Rock</button>
+                    <button id="btn-choose" class="p-3 m-3 rounded-md btn-outline-danger text-center cursor-pointer bg-lime-400 " onclick="choose(1)" p-8>Paper</button>
+                    <button id="btn-choose" class="p-3 m-3 rounded-md btn-outline-success text-center cursor-pointer bg-pink-600 " onclick="choose(2)" p-8>Scissors</button>
+                </div>
+
+                <p id="player_choice" class="p-8 text-yellow text-center">&nbsp;</p>
+
+            </div>
+
+            <div class="vs mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <h3 class="text-center text-white">Result</h3>
+                <p class="text-white text-center" id="round_result">&nbsp;
+                    <img class="mx-auto" style="margin-top:-50px; max-width: 60%;" src="/static/VS.png" />
+                </p>
+            </div>
+
+            <div class="compiter-choices mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <h3 class="text-center text-white">Computer</h3>
+
+                <p id="computer_choice" class="text-white text-center">&nbsp;</p>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<script style="color: black;">
+    //Start Game 
+    function start() {
+        var hidden = document.getElementById("gameplay");
+        var btn_hidden = document.getElementById("button_start_game");
+        hidden.classList.remove("hidden");
+        btn_hidden.classList.add("hidden");
+    }
+
+    //Func OnCLick Player Button
+    function choose(x) {
+        fetch("/play?c=" + x)
+            .then((response) => response.json())
+            .then((data) => {
+                // console.log(data);
+                if (x == 0) {
+                    document.getElementById("player_choice").innerHTML =
+                        "<span style='color: #eab676; font-size: 0.875rem; cursor: pointer; margin-left: 0.75rem;'>Player chose ROCK</span>";
+                } else if (x == 1) {
+                    document.getElementById("player_choice").innerHTML =
+                        "<span style='color: #eab676; font-size: 0.875rem; cursor: pointer; margin-left: 0.75rem;'>Player chose PAPER</span>";
+                } else {
+                    document.getElementById("player_choice").innerHTML =
+                        "<span style='color: #eab676; font-size: 0.875rem; cursor: pointer; margin-left: 0.75rem;'>Player chose SCISSORS</span>";
+                }
+
+                if (data.computer_choice == "ROCK") {
+                    document.getElementById("computer_choice").innerHTML =
+                        "<img class='mx-auto' style='margin-top=-1rem; max-width: 60%;' src='/static/ROCK.png' />"
+                } else if (data.computer_choice == "PAPER") {
+                    document.getElementById("computer_choice").innerHTML =
+                        "<img class='mx-auto' style='margin-top=-1rem; max-width: 60%;' src='/static/PAPER.png' />"
+                } else {
+                    document.getElementById("computer_choice").innerHTML =
+                        "<img class='mx-auto' style='margin-top=-1rem; max-width: 60%;' src='/static/SCISSOR.png' />"
+                }
+
+                if (data.round_result == "WINS") {
+                    document.getElementById("round_result").innerHTML =
+                        "<img class='mx-auto' style='margin-top=-1rem; max-width: 60%;' src='/static/WIN.png' />"
+                } else if (data.round_result == "LOSE") {
+                    document.getElementById("round_result").innerHTML =
+                        "<img class='mx-auto' style='margin-top=-1rem; max-width: 60%;' src='/static/LOSE.png' />"
+                } else {
+                    document.getElementById("round_result").innerHTML =
+                        "<img class='mx-auto' style='margin-top=-1rem; max-width: 60%;' src='/static/DRAW.png' />"
+                }
+
+            });
+    }
+</script>
+
+</html>

@@ -1,0 +1,19 @@
+#button_start_game {
+  transition: transform 0.2s;
+}
+
+#button_start_game:hover {
+  -ms-transform: scale(1.5); /* IE 9 */
+  -webkit-transform: scale(1.5); /* Safari 3-8 */
+  transform: scale(1.5);
+}
+
+#btn-choose {
+  transition: transform 0.2s;
+}
+
+#btn-choose:hover {
+  -ms-transform: scale(1.5); /* IE 9 */
+  -webkit-transform: scale(1.5); /* Safari 3-8 */
+  transform: scale(1.5);
+}
